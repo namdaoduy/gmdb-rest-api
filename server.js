@@ -2,8 +2,9 @@ const express = require('express');
 const mysql = require('mysql')
 const bodyParser = require('body-parser');
 
+// Configure Express App
 const app = express();
-app.use(bodyParser.json());
+
 // Connect to database
 const db = mysql.createConnection({
     host: 'localhost',
@@ -17,6 +18,16 @@ db.connect((err)=>{
         console.log('MySQL Databases connected!');
     }
 })
+
+//// MIDDLEWARE ////
+app.use(bodyParser.json());
+app.use('/api/movies', require('./routes/api/movies'));
+
+// Error Handling
+app.use((req, res, err, next)=>{
+        res.send({error: err.message});
+})
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, (err)=>{
