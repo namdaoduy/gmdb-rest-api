@@ -1,0 +1,22 @@
+{
+  "name": "gmdb-rest-api",
+  "version": "1.0.0",
+  "description": "GMDB Web Application REST API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://nqhung291@bitbucket.org/nmcnpm_104413_01/gmdb-rest-api.git"
+  },
+  "author": "Hung Nguyen",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/nmcnpm_104413_01/gmdb-rest-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.0.1",
+    "express": "^4.16.3",
+    "mysql": "^2.16.0"
+  }
+}
