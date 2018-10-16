@@ -1,36 +1,21 @@
 const express = require('express');
-const mysql = require('mysql')
 const bodyParser = require('body-parser');
-
+const port = process.env.PORT || 3000;
 // Configure Express App
 const app = express();
 
-// Connect to database
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Quanghung291'
-});
-db.connect((err)=>{
-    if(err){
-        console.log(err);
-    } else {
-        console.log('MySQL Databases connected!');
-    }
-})
+// Passport authentication
 
-//// MIDDLEWARE ////
+
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json());
-app.use('/api/movies', require('./routes/api/movies'));
+app.use(express.static(__dirname + '/public'));
 
-// Error Handling
-app.use((req, res, err, next)=>{
-        res.send({error: err.message});
-})
+// movieRouteAPI 
+const movieRoutes = require('./api/routes/movieRoute');
+app.use('/api', movieRoutes);
 
-
-const port = process.env.PORT || 3000;
-app.listen(port, (err)=>{
-    if(err) throw err;
-    console.log(`Server started on port ${port}`);
+app.listen(port, (err) => {
+  if (err) throw err;
+  console.log(`Server started on port ${port}`);
 })
