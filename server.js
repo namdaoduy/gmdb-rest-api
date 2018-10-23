@@ -1,12 +1,8 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const session = require('express-session');
-const passport = require('passport');
-const port = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'));
+const port = process.env.PORT || 3000;
 
 app.use(session({
   secret: 'secret',
@@ -14,13 +10,17 @@ app.use(session({
   resave: true
 }))
 
-// Passport configuration
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
 
-// movieRouteAPI 
+
+
+
+//  REST API routes
 const movieRoutes = require('./api/routes/movieRoute');
 app.use('/api', movieRoutes);
+
 
 app.listen(port, (err) => {
   if (err) throw err;
