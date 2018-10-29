@@ -1,8 +1,8 @@
 // Create Movie object to provide function like creating new movie, get all movies
 // get movies by id, update movies by id and delete movies by id
-
+const jwt = require('jsonwebtoken');
 const sql = require('../config/db');
-
+const config = require('../config/config');
 // Movie object constructor
 const Movie = function (movie) {
   this.movie_id = movie_id;
@@ -24,9 +24,9 @@ const Movie = function (movie) {
 
 Movie.createMovie = function (req, res) {
   const newMovie = new Movie(req.body);
-  sql.query('INSERT INTO movies SET ?', newMovie, (err, result)=>{
+  sql.query('INSERT INTO movies SET ?', newMovie, (err, result) => {
     // handle null error
-    if(err) res.send(err);
+    if (err) res.send(err);
     res.json(result);
   })
 }
@@ -63,15 +63,21 @@ Movie.updateById = function (req, res) {
 }
 
 Movie.remove = function (req, res) {
-  const movie_id = req.params.movie_id;
-  sql.query('DELETE FROM movies WHERE movie_id = ?', movie_id, (err, result) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.json({
-        message: "Successfully deleted"
+  jwt.verify(req.token, config.secret, (err, authData) => {
+    if (err) res.send(403);
+    else {
+      const movie_id = req.params.movie_id;
+      sql.query('DELETE FROM movies WHERE movie_id = ?', movie_id, (err, result) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json({
+            message: "Successfully deleted"
+          })
+        }
       })
     }
   })
+
 }
 module.exports = Movie;
