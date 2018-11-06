@@ -7,8 +7,9 @@ router.route('/register')
   .get(middleware.verifyToken ,userController.getUser)
   .post(userController.create)
 
-router.route('/login')
-  .get()
-  .post()
+router.route('/me')
+  .get(userController.getUser)
 
+router.route('/login')
+  .post(userController.login)
 module.exports = router;
