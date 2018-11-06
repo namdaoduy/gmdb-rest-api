@@ -11,5 +11,6 @@ router.route('/me')
   .get(userController.getUser)
 
 router.route('/login')
-  .post(userController.login)
+  .post(userController.login);
+  
 module.exports = router;
