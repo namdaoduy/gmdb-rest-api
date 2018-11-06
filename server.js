@@ -1,19 +1,37 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
-// Configure Express App
 const app = express();
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
+const port = process.env.PORT || 3000;
 
-// Passport authentication
-
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}))
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
-// movieRouteAPI 
-const movieRoutes = require('./api/routes/movieRoute');
+// passport configuration
+// app.use(passport.initialize());
+// app.use(passport.session())
+// app.use(require('./config/passport'))
+
+//  REST API routes
+const movieRoutes = require('./routes/movieRoute');
+const userRoutes = require('./routes/userRoute')
 app.use('/api', movieRoutes);
+app.use('/api', userRoutes);
+
+// catch 404 and forward to error handler 
+app.use((req, res, next)=>{
+  const err = new Error('Not Found')
+  err.status = 404;
+  next(err)
+});
 
 app.listen(port, (err) => {
   if (err) throw err;
