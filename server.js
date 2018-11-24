@@ -22,9 +22,11 @@ app.use(express.static(__dirname + '/public'));
 
 //  REST API routes
 const movieRoutes = require('./routes/movieRoute');
-const userRoutes = require('./routes/userRoute')
+const userRoutes = require('./routes/userRoute');
+const commentRoutes = require('./routes/commentRoute');
 app.use('/api', movieRoutes);
 app.use('/api', userRoutes);
+app.use('/api', commentRoutes);
 
 // catch 404 and forward to error handler 
 app.use((req, res, next)=>{
