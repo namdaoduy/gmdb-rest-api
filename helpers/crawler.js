@@ -3,26 +3,6 @@ const DomParser = require('dom-parser');
 const parser = new DomParser();
 
 class Crawler {
-  crawlMovieShowtimeFromCine (moveek_id, cine_id, date) {
-    https.get("https://moveek.com/movie/showtime/" + 
-      moveek_id + 
-      "?cinema=" + cine_id + 
-      "&date=" + date + 
-      "&version=")
-    .then((res) => {
-      var ele = parser.parseFromString(res.text, "text/html");
-      var as = ele.getElementsByTagName('a');
-
-      var data  = [];
-      
-      for (let index = 0; index < as.length; index++) {
-        const element = as[index];
-        data.push(element.getElementsByTagName('span')[0].textContent.slice(2,7));
-      }
-      return data;
-    })
-  }
-
   crawlMovieShowtime (moveek_id, date) {
     https.get("https://moveek.com/movie/showtime/" + 
       moveek_id + 
@@ -46,6 +26,26 @@ class Crawler {
       }
     })
     return list_crawl;
+  }
+
+  crawlMovieShowtimeFromCine (moveek_id, cine_id, date) {
+    https.get("https://moveek.com/movie/showtime/" + 
+      moveek_id + 
+      "?cinema=" + cine_id + 
+      "&date=" + date + 
+      "&version=")
+    .then((res) => {
+      var ele = parser.parseFromString(res.text, "text/html");
+      var as = ele.getElementsByTagName('a');
+
+      var data  = [];
+      
+      for (let index = 0; index < as.length; index++) {
+        const element = as[index];
+        data.push(element.getElementsByTagName('span')[0].textContent.slice(2,7));
+      }
+      return data;
+    })
   }
 }
 

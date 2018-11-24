@@ -24,9 +24,11 @@ app.use(express.static(__dirname + '/public'));
 const movieRoutes = require('./routes/movieRoute');
 const userRoutes = require('./routes/userRoute');
 const commentRoutes = require('./routes/commentRoute');
+const showTimeRoutes = require('./routes/showTimeRoute');
 app.use('/api', movieRoutes);
 app.use('/api', userRoutes);
 app.use('/api', commentRoutes);
+app.use('/api', showTimeRoutes);
 
 // catch 404 and forward to error handler 
 app.use((req, res, next)=>{
