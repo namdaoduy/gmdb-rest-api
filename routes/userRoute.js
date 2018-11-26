@@ -12,5 +12,7 @@ router.route('/me')
 
 router.route('/login')
   .post(userController.login);
+
+router.route('/logout')
   
 module.exports = router;

@@ -14,18 +14,13 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
-// passport configuration
-// app.use(passport.initialize());
-// app.use(passport.session())
-// app.use(require('./config/passport'))
-
 //  REST API routes
 const movieRoutes = require('./routes/movieRoute');
 const userRoutes = require('./routes/userRoute');
 const commentRoutes = require('./routes/commentRoute');
 const showTimeRoutes = require('./routes/showTimeRoute');
 app.use('/api', movieRoutes);
-app.use('/api', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', showTimeRoutes);
 
