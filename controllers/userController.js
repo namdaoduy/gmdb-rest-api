@@ -4,12 +4,13 @@ const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 module.exports = {
   getUser: function(req, res) {
-    const token = req.headers['x-access-token']
-    if(!token) return res.status(401).send({auth: false, message: 'No token provided'})
-    jwt.verify(token, config.secret, (err, decoded)=>{
-      if(err) res.status(500);
-      else res.status(200).send(decoded.user)
-    })
+    console.log(req.username);
+    sql.query('SELECT * FROM users WHERE username = ?', req.username, (err, result)=>{
+      console.log(result);
+      if(err) return res.status(500).send(err);
+      if(!result) return res.stats(404).send({message: "No user found"});
+      res.status(200).send(result);
+    })  
   },
 
   create: function(req, res) {
