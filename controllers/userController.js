@@ -4,12 +4,13 @@ const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 module.exports = {
   getUser: function(req, res) {
-    const token = req.headers['x-access-token']
-    if(!token) return res.status(401).send({auth: false, message: 'No token provided'})
-    jwt.verify(token, config.secret, (err, decoded)=>{
-      if(err) res.status(500);
-      else res.status(200).send(decoded.user)
-    })
+    console.log(req.username);
+    sql.query('SELECT * FROM users WHERE username = ?', req.username, (err, result)=>{
+      console.log(result);
+      if(err) return res.status(500).send(err);
+      if(!result) return res.stats(404).send({message: "No user found"});
+      res.status(200).send(result);
+    })  
   },
 
   create: function(req, res) {
@@ -39,13 +40,16 @@ module.exports = {
     sql.query('SELECT * FROM users WHERE username = ?', req.body.username, (err, user)=>{
       if(err) return res.status(500).send('Error on the server');
       if(!user) return res.status(404).send('No user found');
-
-      const passwordIsValid = bcrypt.compareSync(req.body.userpass, user.userpass);
+      const passwordIsValid = bcrypt.compareSync(req.body.userpass, user[0].userpass);
       if(!passwordIsValid) return res.status(401).send({auth: false, token: null})
       else {
-        const token = jwt.sign({id: user_id}, config.secret, {expiresIn: 86400});
+        const token = jwt.sign({id: user[0].user_id}, config.secret, {expiresIn: 86400});
         res.status(200).send({auth: true, token: token});
       }
     })
+  },
+
+  logout: function(req, res) {
+    
   }
 }

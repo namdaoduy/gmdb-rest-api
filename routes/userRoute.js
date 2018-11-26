@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const middleware = require('../middleware')
+const verifyToken = require('../config/verifyToken');
 const userController = require('../controllers/userController');
 
 router.route('/register')
-  .get(middleware.verifyToken ,userController.getUser)
-  .post(userController.create)
+  .get(verifyToken, userController.getUser)
+  .post(verifyToken, userController.create)
 
 router.route('/me')
-  .get(userController.getUser)
+  .get(verifyToken, userController.getUser)
 
 router.route('/login')
-  .post(userController.login)
+  .post(userController.login);
+  
 module.exports = router;

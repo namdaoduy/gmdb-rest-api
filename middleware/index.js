@@ -1,4 +1,3 @@
-
 module.exports = {
   verifyToken: function(req, res, next) {
     const token = req.headers['x-access-token'];
