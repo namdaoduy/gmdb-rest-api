@@ -17,8 +17,14 @@ module.exports = {
           mm = '0' + mm
         }
         today = yyyy + '-' + mm + '-' + dd;
-        res.json(showTimeCrawler.crawlMovieShowtime(result[0].moveek_id, today));
+        showTimeCrawler.crawlMovieShowtime(result[0].moveek_id, today).then(response => {
+          res.json(response);
+        }).catch(err=>{res.send({err: true})});
       }
     })
+  },
+
+  getMovieShowtimeByCine: function(req, res) {
+    
   }
 }
