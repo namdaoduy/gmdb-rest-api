@@ -10,19 +10,23 @@ class Cinema {
       .then((cine_list) => {
         for (let i = 0; i < cine_list.length; i++) {
           distances.push({
+            id: cine_list[i].id,
             name: cine_list[i].name,
             distance: Math.sqrt(Math.pow(cine_list[i].latitude-latitude,2) + Math.pow(cine_list[i].longitude-longitude,2)),
           })
         }
+        distances.sort((a,b) => {
+          return a.distance - b.distance
+        })
         console.log(distances)
         console.log(this.findMin(distances));
-        return this.findMin(distances)
+        return this.findNameOfMin(distances)
       })
       .catch((err) =>{
         console.log(err)
       })
   }
-  findMin(list) {
+  findNameOfMin(list) {
     var min = list[0].distance;
     var name;
     for (var i = 0; i < list.length; i++) {
