@@ -3,11 +3,12 @@ const DomParser = require('dom-parser');
 const parser = new DomParser();
 
 class Crawler {
-  async crawlMovieShowtime (moveek_id, date) {
-    const res = await https.get("https://moveek.com/movie/showtime/" + 
-      moveek_id + 
-      "?date=" + date + 
-      "&version=");
+  async crawlMovieShowtime(moveek_id, date) {
+    const res = await https.get("https://moveek.com/movie/showtime/" +
+      moveek_id +
+      "?date=" + date +
+      "&version=")
+      .set('Cookie', locationHanoi);
 
     let list_crawl = [];
     let list_crawl_group = [];
@@ -29,30 +30,44 @@ class Crawler {
     return list_crawl;
   }
 
-  async crawlMovieShowtimeFromCine (moveek_id, cine_id, date) {
-    const res = await https.get("https://moveek.com/movie/showtime/" + 
-      moveek_id + 
-      "?cinema=" + cine_id + 
-      "&date=" + date + 
-      "&version=");
+  async crawlMovieShowtimeFromCine(moveek_id, cine_id, date) {
+    const res = await https.get("https://moveek.com/movie/showtime/" +
+      moveek_id +
+      "?cinema=" + cine_id +
+      "&date=" + date +
+      "&version=")
+      .set('Cookie', locationHanoi);
 
     const ele = parser.parseFromString(res.text, "text/html");
     const as = ele.getElementsByTagName('a');
 
-    let data  = [];
-    
+    let data = [];
+
     for (let index = 0; index < as.length; index++) {
       const element = as[index];
-      data.push(element.getElementsByTagName('span')[0].textContent.slice(2,7));
+      data.push(element.getElementsByTagName('span')[0].textContent.slice(2, 7));
     }
     return data;
   }
 
-  async crawlCineFromMovie (moveek_id, date) {
-    const res = await https.get("https://moveek.com/movie/showtime/" + 
-      moveek_id + 
-      "?date=" + date + 
-      "&version=");
+  async crawlCineFromMovie(moveek_id, date) {
+    const res = await https.get("https://moveek.com/movie/showtime/" +
+      moveek_id +
+      "?date=" + date +
+      "&version=")
+      .set('Cookie', locationHanoi);
+    let cine_list = [];
+    for (let i = 0; i < res.body.cineplexes.length; i++) {
+      for (let j = 0; j < res.body.cineplexes[i].cinemas.length; j++) {
+        cine_list.push({
+          id: res.body.cineplexes[i].cinemas[j].id,
+          name: res.body.cineplexes[i].cinemas[j].name,
+          latitude: res.body.cineplexes[i].cinemas[j].location.latitude,
+          longitude: res.body.cineplexes[i].cinemas[j].location.longitude,
+        })
+      }
+    }
+    return cine_list;
   }
 }
 
