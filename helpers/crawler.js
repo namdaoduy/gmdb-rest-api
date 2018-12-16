@@ -47,6 +47,13 @@ class Crawler {
     }
     return data;
   }
+
+  async crawlCineFromMovie (moveek_id, date) {
+    const res = await https.get("https://moveek.com/movie/showtime/" + 
+      moveek_id + 
+      "?date=" + date + 
+      "&version=");
+  }
 }
 
 const crawler = new Crawler();
