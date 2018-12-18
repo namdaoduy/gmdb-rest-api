@@ -71,11 +71,13 @@ class Crawler {
   }
 
   async crawlMoveekId() {
+    //convert html to dom
     const res = await https.get("https://moveek.com/lich-chieu/")
     const ele = parser.parseFromString(res.text, "text/html");
     const dom = new JSDOM(ele.rawHTML);
     var movie_list = [];
     let count = 0
+    //push all movie_id and name into lít to return
     while(1) {
       if (dom.window.document.getElementsByTagName('select')[0][count] == undefined) {
         break;
