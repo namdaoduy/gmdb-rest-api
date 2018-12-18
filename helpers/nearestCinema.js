@@ -39,6 +39,9 @@ class Cinema {
                   result_after.push(result[i])
                 }
               }
+              return result_after;
+            })
+            .then (result_after => {
               if (result_after.length != 0) {
                 suggest_list.push({
                   id: nearest_cinemas[i].id,
