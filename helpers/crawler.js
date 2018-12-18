@@ -69,6 +69,26 @@ class Crawler {
     }
     return cine_list;
   }
+
+  async crawlMoveekId() {
+    const res = await https.get("https://moveek.com/lich-chieu/")
+    const ele = parser.parseFromString(res.text, "text/html");
+    const dom = new JSDOM(ele.rawHTML);
+    var movie_list = [];
+    let count = 0
+    while(1) {
+      if (dom.window.document.getElementsByTagName('select')[0][count] == undefined) {
+        break;
+      }
+      movie_list.push({
+        moveek_id: dom.window.document.getElementsByTagName('select')[0][count].getAttribute('value'),
+        name: dom.window.document.getElementsByTagName('select')[0][count].innerHTML
+      })
+      count= count+1;
+    }
+    console.log(movie_list)
+    return movie_list;
+  }
 }
 
 const crawler = new Crawler();
