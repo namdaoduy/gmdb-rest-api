@@ -1,6 +1,7 @@
 const https = require("superagent");
 const DomParser = require('dom-parser');
 const parser = new DomParser();
+const locationHanoi = 'location=YTo0OntzOjk6ImZhdm91cml0ZSI7YjowO3M6NDoidHlwZSI7czo2OiJyZWdpb24iO3M6NjoicmVnaW9uIjthOjM6e3M6MjoiaWQiO2k6OTtzOjQ6Im5hbWUiO3M6OToiSMOgIE7hu5lpIjtzOjQ6InNsdWciO3M6NjoiaGEtbm9pIjt9czo4OiJsb2NhdGlvbiI7YToyOntzOjM6ImxhdCI7czowOiIiO3M6MzoibG5nIjtzOjA6IiI7fX0%3D; path=/; domain=.moveek.com; Expires=Tue, 19 Jan 2038 03:14:07 GMT;'
 
 class Crawler {
   async crawlMovieShowtime(moveek_id, date) {
@@ -27,7 +28,6 @@ class Crawler {
       });
       list_crawl_group = [];
     }
-    console.log(list_crawl);
     return list_crawl;
   }
 

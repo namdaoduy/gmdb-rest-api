@@ -1,5 +1,6 @@
 const sql = require('../config/db');
 const showTimeCrawler = require('../helpers/crawler');
+const nearestCinema = require('../helpers/nearestCinema');
 
 function getDay() {
   var today = new Date();
@@ -47,6 +48,18 @@ module.exports = {
         res.send(err);
       } else {
         showTimeCrawler.crawlCineFromMovie(result[0].moveek_id, getDay()).then(response => {
+          res.json(response);
+        }).catch(err=>{res.send({err: true})});
+      }
+    })
+  },
+
+  getNearestCine: function(req, res) {
+    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ?", req.params.movie_id, (err, result)=>{
+      if(err) {
+        res.send(err);
+      } else {
+        nearestCinema.suggestShowTime().then(response => {
           res.json(response);
         }).catch(err=>{res.send({err: true})});
       }
