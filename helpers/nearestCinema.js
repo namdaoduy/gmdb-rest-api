@@ -27,7 +27,7 @@ class Cinema {
       .then(async () => {
         //find showtime for those nearest cinemas
         for (var i = 0; i < nearest_cinemas.length; i++) {
-          await crawler.crawlMovieShowtimeFromCine(15184, nearest_cinemas[i].id, 2018 - 12 - 16)
+          await crawler.crawlMovieShowtimeFromCine(moveek_id, nearest_cinemas[i].id, date)
             .then(result => {
               var result_after = []
               for (var i = 0; i < result.length; i++) {
@@ -41,7 +41,7 @@ class Cinema {
               }
               return result_after;
             })
-            .then (result_after => {
+            .then(result_after => {
               if (result_after.length != 0) {
                 suggest_list.push({
                   id: nearest_cinemas[i].id,
