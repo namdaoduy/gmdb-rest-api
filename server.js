@@ -19,10 +19,13 @@ const movieRoutes = require('./routes/movieRoute');
 const userRoutes = require('./routes/userRoute');
 const commentRoutes = require('./routes/commentRoute');
 const showTimeRoutes = require('./routes/showTimeRoute');
+const cineRoutes = require('./routes/cineRoute');
+
 app.use('/api', movieRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', showTimeRoutes);
+app.use('/api', cineRoutes);
 
 // catch 404 and forward to error handler 
 app.use((req, res, next)=>{

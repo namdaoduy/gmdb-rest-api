@@ -63,5 +63,17 @@ module.exports = {
         res.json({message: "Successfully deleted"})
       }
     })
+  },
+
+  getMovieByType: function(req, res) {
+    const type = '"%' + req.params.movie_type + '%"';
+    const querySent = 'SELECT * FROM movies WHERE types LIKE ' + type;
+    sql.query(querySent, (err, result)=>{
+      if(err) {
+        res.send(err);
+      } else {
+        res.json(result);
+      }
+    })
   }
 }

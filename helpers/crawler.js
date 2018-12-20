@@ -27,6 +27,7 @@ class Crawler {
       });
       list_crawl_group = [];
     }
+    console.log(list_crawl);
     return list_crawl;
   }
 
