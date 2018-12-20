@@ -7,10 +7,12 @@ router.route('/register')
   .get(verifyToken, userController.getUser)
   .post(verifyToken, userController.create)
 
-router.route('/me')
-  .get(verifyToken, userController.getUser)
+// router.route('/me')
+//   .get(verifyToken, userController.getUser)
 
 router.route('/login')
   .post(userController.login);
+
+router.route('/logout')
   
 module.exports = router;

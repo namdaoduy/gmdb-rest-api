@@ -13,5 +13,7 @@ router.route('/movies/id/:movie_id')
 router.route('/movies/name/:movie_name')
   .get(moviesController.getMovieByName)
 
+router.route('/movies/type/:movie_type')
+  .get(moviesController.getMovieByType)
 module.exports = router;
 

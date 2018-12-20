@@ -23,10 +23,10 @@ module.exports = {
     })
   },
 
-  getMovieByName: function(req, res) {
+  getMovieByName: function (req, res) {
     const movieName = '%' + req.params.movie_name + '%';
     sql.query('SELECT name FROM movies WHERE name LIKE ? LIMIT 5', movieName, (err, result) => {
-      if(err) res.send(err);
+      if (err) res.send(err);
       else {
         res.json(result);
       }
@@ -55,21 +55,25 @@ module.exports = {
   },
 
   deleteMovieById: function (req, res) {
-    jwt.verify(req.token, config.secret, (err, authData) => {
-      if (err) res.send(403);
-      else {
-        const movie_id = req.params.movie_id;
-        sql.query('DELETE FROM movies WHERE movie_id = ?', movie_id, (err, result) => {
-          if (err) {
-            res.send(err);
-          } else {
-            res.json({
-              message: "Successfully deleted"
-            })
-          }
-        })
+    const movie_id = req.params.movie_id;
+    sql.query('DELETE FROM movies WHERE movie_id = ?', movie_id, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json({message: "Successfully deleted"})
       }
     })
+  },
 
+  getMovieByType: function(req, res) {
+    const type = '"%' + req.params.movie_type + '%"';
+    const querySent = 'SELECT * FROM movies WHERE types LIKE ' + type;
+    sql.query(querySent, (err, result)=>{
+      if(err) {
+        res.send(err);
+      } else {
+        res.json(result);
+      }
+    })
   }
 }
