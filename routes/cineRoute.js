@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const showtimeController = require('../controllers/showtimeController');
 
-// 
+ 
 router.route('/cine/:movie_id')
   .get(showtimeController.getCineByMovie);
 
-// working
-// router.route('/nearestcine/:movie_id')
-//   .get(showtimeController.getNearestCine);
+// recommend movie by location and time
+router.route('/nearestcine/:movie_id')
+  .get(showtimeController.getNearestCine);
 module.exports = router;
