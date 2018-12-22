@@ -23,7 +23,7 @@ module.exports = {
       if(err) {
         res.send(err);
       } else {
-        showTimeCrawler.crawlMovieShowtime(result[0].moveek_id, getDay()).then(response => {
+        showTimeCrawler.crawlCineIDandMovieIDfromMoveek(result[0].moveek_id, getDay()).then(response => {
           res.json(response);
         }).catch(err=>{res.send({err: true})});
       }
@@ -64,5 +64,11 @@ module.exports = {
         }).catch(err=>{res.send({err: true})});
       }
     })
+  },
+
+  getAllDisplayingMovie: function(req, res) {
+    showTimeCrawler.crawlMoveekId().then(response => {
+      res.json(response);
+    }).catch(err=>{res.send({err: true})});
   }
 }
