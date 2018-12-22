@@ -25,7 +25,7 @@ module.exports = {
   },
 
   getMovieShowtimeByCine: function(req, res) {
-    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ? AND cine_id = ?", req.params.movie_id, req.params.cine_id, (err, result)=>{
+    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ?", req.params.movie_id, (err, result)=>{
       if(err) {
         res.send(err);
       } else {
@@ -40,7 +40,7 @@ module.exports = {
           mm = '0' + mm
         }
         today = yyyy + '-' + mm + '-' + dd;
-        showTimeCrawler.crawlMovieShowtimeFromCine(result[0].moveek_id, today).then(response => {
+        showTimeCrawler.crawlMovieShowtimeFromCine(result[0].moveek_id, req.params.cine_id, today).then(response => {
           res.json(response);
         }).catch(err=>{res.send({err: true})});
       }
