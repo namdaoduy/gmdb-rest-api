@@ -59,7 +59,7 @@ module.exports = {
       if(err) {
         res.send(err);
       } else {
-        nearestCinema.suggestShowTime().then(response => {
+        nearestCinema.suggestShowTime(latitude, longitude, result[0].moveek_id, getDay()).then(response => {
           res.json(response);
         }).catch(err=>{res.send({err: true})});
       }
