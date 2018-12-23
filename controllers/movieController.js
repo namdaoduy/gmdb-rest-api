@@ -100,7 +100,7 @@ module.exports = {
         }
         for(let i = 0; i < response.length; i++) {
           if(!list_moveek_id.includes(response[i].moveek_id)) {
-            const image_name = Date.now();
+            const image_name = response[i].moveek_id;
             download(response[i].image_url, image_name+'.jpg', ()=>{})
             response[i].image_url = '/images/' + image_name + '.jpg';
             sql.query('INSERT INTO movies SET ?', response[i], (err, result)=>{
