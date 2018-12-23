@@ -39,7 +39,7 @@ module.exports = {
       if (err) {
         res.send(err);
       } else {
-        res.json(result)
+        res.json(result[0])
       }
     })
   },
