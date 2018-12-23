@@ -177,9 +177,9 @@ class Crawler {
           list.push({
             name: returnList[count].name,
             moveek_id: moveekIDList[count].moveek_id,
-            age_rating: null,
+            age_rated: null,
             imdb_rating: null,
-            type: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
+            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
             duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
             trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
             image_url: returnList[count].urlImg,
@@ -190,9 +190,9 @@ class Crawler {
           list.push({
             name: returnList[count].name,
             moveek_id: moveekIDList[count].moveek_id,
-            age_rating: dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML,
+            age_rated: dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML,
             imdb_rating: null,
-            type: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
+            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
             duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
             trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
             image_url: returnList[count].urlImg,
@@ -205,9 +205,9 @@ class Crawler {
           list.push({
             name: returnList[count].name,
             moveek_id: moveekIDList[count].moveek_id,
-            age_rating: null,
+            age_rated: null,
             imdb_rating: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            type: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
+            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
             duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[1].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
             trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
             image_url: returnList[count].urlImg,
@@ -218,9 +218,9 @@ class Crawler {
           list.push({
             name: returnList[count].name,
             moveek_id: moveekIDList[count].moveek_id,
-            age_rating: dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML,
+            age_rated: dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML,
             imdb_rating: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            type: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
+            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
             duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[1].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
             trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
             image_url: returnList[count].urlImg,
@@ -231,7 +231,6 @@ class Crawler {
 
       count = count + 1;
     }
-    console.log(list)
     return list;
   }
 }

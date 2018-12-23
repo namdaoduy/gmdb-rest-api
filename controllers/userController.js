@@ -43,7 +43,7 @@ module.exports = {
       const passwordIsValid = bcrypt.compareSync(req.body.userpass, user[0].userpass);
       if(!passwordIsValid) return res.status(401).send({auth: false, token: null})
       else {
-        const token = jwt.sign({id: user[0].user_id}, config.secret, {expiresIn: 86400});
+        const token = jwt.sign({username: user[0].username}, config.secret, {expiresIn: 86400});
         res.status(200).send({auth: true, token: token});
       }
     })

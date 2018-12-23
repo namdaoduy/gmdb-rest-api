@@ -26,5 +26,9 @@ router.route('/movies/name/:movie_name')
 router.route('/movies/type/:movie_type')
   // find movie by type
   .get(moviesController.getMovieByType)
+
+router.route('/movies/crawl')
+  .get(moviesController.crawlMovieInfo);
+  
 module.exports = router;
 

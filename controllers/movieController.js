@@ -2,7 +2,7 @@
 // get movies by id, update movies by id and delete movies by id
 const jwt = require('jsonwebtoken');
 const sql = require('../config/db');
-const config = require('../config/config');
+const crawler = require('../helpers/crawler');
 
 module.exports = {
   create: function (req, res) {
@@ -75,5 +75,31 @@ module.exports = {
         res.json(result);
       }
     })
+  },
+
+  crawlMovieInfo: function(req, res) {
+    crawler.crawlMovieInfo().then(response=>{
+      let list_moveek_id = [];
+      sql.query('SELECT moveek_id FROM movies', (err, result)=>{
+        if(err) res.send(err);
+        else {
+          result.forEach(ele => {
+            list_moveek_id.push(ele.moveek_id);
+          })
+        }
+        for(let i = 0; i < response.length; i++) {
+          if(!list_moveek_id.includes(response[i].moveek_id)) {
+            const image_url = Date.now();
+            sql.query('INSERT INTO movies SET ?', response[i], (err, result)=>{
+              if(err) {
+                res.send(err);
+              }
+            })
+          }
+        }
+      })
+    }).then(()=>{
+      res.send({done: true})
+    }).catch(err=>{res.send({err: true})});
   }
 }
