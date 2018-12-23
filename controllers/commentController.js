@@ -1,6 +1,4 @@
-const jwt = require('jsonwebtoken'); 
 const sql = require('../config/db');
-const config = require('../config/config');
 
 module.exports = {
   create: function(req, res) {

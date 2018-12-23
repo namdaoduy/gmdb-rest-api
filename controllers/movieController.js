@@ -1,14 +1,13 @@
 // Create Movie object to provide function like creating new movie, get all movies
 // get movies by id, update movies by id and delete movies by id
-const jwt = require('jsonwebtoken');
+
 const sql = require('../config/db');
-const config = require('../config/config');
 const download = require('../helpers/download');
 
 module.exports = {
   create: function (req, res) {
     const img_name = Date.now();
-    download('https://i.moveek.com/media/resized/tall/5c0f47f158253520192716.jpg', img_name+'.jpg', ()=>{
+    download(req.body.image_url, img_name+'.jpg', ()=>{
       console.log({done: true});
     })
     const newMovie = {
