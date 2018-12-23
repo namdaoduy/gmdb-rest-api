@@ -1,6 +1,8 @@
 const https = require("superagent");
 const DomParser = require('dom-parser');
 const parser = new DomParser();
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
 const locationHanoi = 'location=YTo0OntzOjk6ImZhdm91cml0ZSI7YjowO3M6NDoidHlwZSI7czo2OiJyZWdpb24iO3M6NjoicmVnaW9uIjthOjM6e3M6MjoiaWQiO2k6OTtzOjQ6Im5hbWUiO3M6OToiSMOgIE7hu5lpIjtzOjQ6InNsdWciO3M6NjoiaGEtbm9pIjt9czo4OiJsb2NhdGlvbiI7YToyOntzOjM6ImxhdCI7czowOiIiO3M6MzoibG5nIjtzOjA6IiI7fX0%3D; path=/; domain=.moveek.com; Expires=Tue, 19 Jan 2038 03:14:07 GMT;'
 
 class Crawler {
@@ -83,8 +85,8 @@ class Crawler {
 
   // crawl all DISPLAYING MOVIES at all cinemas (actually at this moment it's Hanoi)
   async crawlMoveekId() {
-    const res = await https.get("https://moveek.com/lich-chieu/")
-    const ele = parser.parseFromString(res.text, "text/html");
+    const res = await https.get('https://moveek.com/lich-chieu/');
+    const ele = parser.parseFromString(res.text, 'text/html');
     const dom = new JSDOM(ele.rawHTML);
     var movie_list = [];
     let count = 0
@@ -98,7 +100,6 @@ class Crawler {
       })
       count= count+1;
     }
-    console.log(movie_list)
     return movie_list;
   }
 }

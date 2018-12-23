@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const showtimeController = require('../controllers/showtimeController');
 
-// get all displaying movie showtime <ERROR>
+// get all displaying movie showtime
 router.route('/showtime')
   .get(showtimeController.getAllDisplayingMovie);
 // input: movie_id

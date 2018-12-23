@@ -67,8 +67,8 @@ module.exports = {
   },
 
   getAllDisplayingMovie: function(req, res) {
-    showTimeCrawler.crawlMoveekId().then(response => {
-      res.json(response);
+    showTimeCrawler.crawlMoveekId().then((result) => {
+      res.json(result);
     }).catch(err=>{res.send({err: true})});
   }
 }
