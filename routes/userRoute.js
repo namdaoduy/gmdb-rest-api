@@ -6,7 +6,7 @@ const userController = require('../controllers/userController');
 // register user
 router.route('/register')
   .get(verifyToken, userController.getUser)
-  .post(verifyToken ,userController.create)
+  .post(verifyToken, userController.create)
 
 // router.route('/me')
 //   .get(verifyToken, userController.getUser)
