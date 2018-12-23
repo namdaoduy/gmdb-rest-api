@@ -25,10 +25,10 @@ module.exports = {
 
   getMovieByName: function (req, res) {
     const movieName = '%' + req.params.movie_name + '%';
-    sql.query('SELECT name FROM movies WHERE name LIKE ? LIMIT 5', movieName, (err, result) => {
+    sql.query('SELECT name FROM movies WHERE name LIKE ?', movieName, (err, result) => {
       if (err) res.send(err);
       else {
-        res.json(result);
+        res.json(result[0]);
       }
     })
   },
@@ -39,7 +39,7 @@ module.exports = {
       if (err) {
         res.send(err);
       } else {
-        res.json(result)
+        res.json(result[0])
       }
     })
   },
