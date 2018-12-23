@@ -8,8 +8,8 @@ router.route('/movies')
   // get all movies info
   .get(moviesController.getAllMovies)
   // create a movie, admin permission
-  .post(verifyToken, moviesController.create);
-  // .post(moviesController.create);
+  // .post(verifyToken, moviesController.create);
+  .post(moviesController.create);
 // input: movie_id
 router.route('/movies/id/:movie_id')
   // find movie by id
