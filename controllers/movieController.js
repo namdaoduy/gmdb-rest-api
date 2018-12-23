@@ -36,14 +36,13 @@ module.exports = {
     sql.query('SELECT name FROM movies WHERE name LIKE ?', movieName, (err, result) => {
       if (err) res.send(err);
       else {
-        res.json(result[0]);
+        res.json(result);
       }
     })
   },
 
   getMovieById: function (req, res) {
     const movie_id = req.params.movie_id;
-    // sql.query('SELECT * FROM movies WHERE movie_id = ?', movie_id, (err, result) => {
     sql.query(`select movies.*, r.gmdb_rating from movies
     left join (select movie_id,round(avg(point),1) as gmdb_rating from rates group by (movie_id)) as r
     on movies.movie_id = r.movie_id where movies.movie_id = ?;`, movie_id, (err, result) => {
