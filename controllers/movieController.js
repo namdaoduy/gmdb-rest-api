@@ -3,23 +3,31 @@
 const jwt = require('jsonwebtoken');
 const sql = require('../config/db');
 const config = require('../config/config');
+const download = require('../helpers/download');
 
 module.exports = {
   create: function (req, res) {
+    const img_name = Date.now();
+    download('https://i.moveek.com/media/resized/tall/5c0f47f158253520192716.jpg', img_name+'.jpg', ()=>{
+      console.log({done: true});
+    })
     const newMovie = {
       name: req.body.name,
       imdb_rating: req.body.imdb_rating,
-      image_url: req.body.image_url,
+      image_url: "/images/" + img_name + '.jpg',
       trailer_url: req.body.trailer_url,
       main_actors: req.body.main_actors,
       types: req.body.types,
       description: req.body.description,
-      moveek_id: req.body.moveek_id,
-      cine_id: req.body.cine_id
+      moveek_id: req.body.moveek_id
+    }
+    if(!newMovie.name || !newMovie.imdb_rating || !newMovie.trailer_url || !newMovie.main_actors || !newMovie.types || !newMovie.description || !newMovie.moveek_id) {
+      res.send(err);
+      return;
     }
     sql.query('INSERT INTO movies SET ?', newMovie, (err, result) => {
       if (err) res.send(err);
-      res.json(result);
+      res.json({done: true});
     })
   },
 

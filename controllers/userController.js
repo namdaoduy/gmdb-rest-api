@@ -22,6 +22,10 @@ module.exports = {
             username: req.body.username,
             userpass: hash
           }
+          if(!newUser.username || !newUser.userpass) {
+            res.send(err);
+            return;
+          }
           sql.query('INSERT INTO users SET ?', newUser, (err, user)=>{
             if(err) {
               res.json({success: false, message: "Failed to add user"})
