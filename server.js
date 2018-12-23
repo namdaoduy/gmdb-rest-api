@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const port = process.env.PORT || 3000;
+const cors = require('cors');
 
 app.use(session({
   secret: 'secret',
@@ -13,6 +14,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
+app.use(cors());
 
 //  REST API routes
 const movieRoutes = require('./routes/movieRoute');
