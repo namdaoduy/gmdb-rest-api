@@ -33,7 +33,7 @@ module.exports = {
   getCommentById: function(req, res) {
     sql.query("SELECT name, email, comment, point rates WHERE movie_id = ? AND rate_id = ?", [req.params.movie_id, req.params.rate_id], (err, result)=>{
       if(err) res.send(err);
-      else res.send(result);
+      else res.send(result[0]);
     })
   },
 

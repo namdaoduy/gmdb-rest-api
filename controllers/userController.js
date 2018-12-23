@@ -9,7 +9,7 @@ module.exports = {
       console.log(result);
       if(err) return res.status(500).send(err);
       if(!result) return res.stats(404).send({message: "No user found"});
-      res.status(200).send(result);
+      res.status(200).send(result[0]);
     })  
   },
 
@@ -50,6 +50,6 @@ module.exports = {
   },
 
   logout: function(req, res) {
-    
+    res.status(200).send({auth: false, token: null});
   }
 }
