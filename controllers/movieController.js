@@ -105,17 +105,16 @@ module.exports = {
   },
 
   crawlMovieInfo: function(req, res) {
-    crawler.crawlMovieInfo().then(response=>{
+    crawler.crawlMovieInfo()
+    .then(response=>{
       let list_moveek_id = [];
       sql.query('SELECT moveek_id FROM movies', (err, result)=>{
         if(err) res.send(err);
         else {
-          result.forEach(ele => {
-            list_moveek_id.push(ele.moveek_id);
-          })
+          list_moveek_id = result.map(item => (item.moveek_id.toString()))
         }
         for(let i = 0; i < response.length; i++) {
-          if(!list_moveek_id.includes(response[i].moveek_id)) {
+          if(list_moveek_id.indexOf(response[i].moveek_id) < 0) {
             const image_name = response[i].moveek_id;
             download(response[i].image_url, image_name+'.jpg', ()=>{})
             response[i].image_url = '/images/' + image_name + '.jpg';
@@ -127,8 +126,8 @@ module.exports = {
           }
         }
       })
-    }).then(()=>{
-      res.send({done: true})
-    }).catch(err=>{res.send({err: true})});
+    })
+    .then(() => res.send({done: true}))
+    .catch(err=>{res.send({err: true})});
   }
 }
