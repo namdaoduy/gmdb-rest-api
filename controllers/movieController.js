@@ -7,7 +7,7 @@ const crawler = require('../helpers/crawler');
 
 module.exports = {
   create: function (req, res) {
-    const img_name = Date.now();
+    const img_name = req.body.moveek_id;
     download(req.body.image_url, img_name+'.jpg', ()=>{
       console.log({done: true});
     })
@@ -73,6 +73,23 @@ module.exports = {
       } else {
         res.json({message: "Successfully deleted"})
       }
+    })
+  },
+
+  updateMovieById: function(req, res) {
+    const updateMovie = {
+      name: req.body.name,
+      imdb_rating: req.body.imdb_rating,
+      image_url: '/images/' + req.body.moveek_id + '.jpg',
+      trailer_url: req.body.trailer_url,
+      main_actors: req.body.main_actors,
+      types: req.body.types,
+      description: req.body.description,
+      moveek_id: req.body.moveek_id
+    }
+    sql.query('UPDATE movies SET ? WHERE movie_id = ?', [updateMovie, req.params.movie_id], (err, result)=>{
+      if(err) res.send(err);
+      else res.json(result);
     })
   },
 
