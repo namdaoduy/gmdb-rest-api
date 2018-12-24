@@ -22,7 +22,7 @@ module.exports = {
   },
 
   getAllComments: function(req, res) {
-    sql.query("SELECT name, email, comment, point FROM rates WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result)=>{
+    sql.query("SELECT name, email, comment, point, movie_id, rate_id FROM rates WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result)=>{
       if(err) res.send(err);
       else res.send(result);
     })

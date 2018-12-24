@@ -87,16 +87,15 @@ module.exports = {
       description: req.body.description,
       duration: req.body.duration
     }
-    sql.query('UPDATE movies SET ? WHERE movie_id = ? and deleted_at is null', [updateMovie, req.params.movie_id], (err, result)=>{
+    sql.query('UPDATE movies SET ? WHERE movie_id = ?', [updateMovie, req.params.movie_id], (err, result)=>{
       if(err) res.send(err);
       else res.json(result);
     })
   },
 
   getMovieByType: function(req, res) {
-    const type = '"%' + req.params.movie_type + '%"';
-    const querySent = 'SELECT * FROM movies WHERE types LIKE and deleted_at is null' + type;
-    sql.query(querySent, (err, result)=>{
+    const type = '%' + req.params.movie_type + '%';
+    sql.query('SELECT * FROM movies WHERE types LIKE ? and deleted_at is null', type, (err, result)=>{
       if(err) {
         res.send(err);
       } else {
@@ -108,7 +107,7 @@ module.exports = {
   crawlMovieInfo: function(req, res) {
     crawler.crawlMovieInfo().then(response=>{
       let list_moveek_id = [];
-      sql.query('SELECT moveek_id FROM movies where deleted_at is null', (err, result)=>{
+      sql.query('SELECT moveek_id FROM movies', (err, result)=>{
         if(err) res.send(err);
         else {
           result.forEach(ele => {

@@ -15,7 +15,7 @@ router.route('/movies/id/:movie_id')
   // find movie by id
   .get(moviesController.getMovieById)
   // delete a movie by id, admin permission
-  .delete(verifyToken, moviesController.deleteMovieById)
+  .delete(moviesController.deleteMovieById)
   // update movie by Id
   .put(moviesController.updateMovieById);
 
