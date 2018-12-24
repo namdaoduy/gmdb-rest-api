@@ -19,7 +19,7 @@ function getDay() {
 
 module.exports = {
   getMovieShowtime: function (req, res) {
-    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ?", req.params.movie_id, (err, result)=>{
+    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result)=>{
       if(err) {
         res.send(err);
       } else {
@@ -31,7 +31,7 @@ module.exports = {
   },
 
   getMovieShowtimeByCine: function(req, res) {
-    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ?", req.params.movie_id, (err, result)=>{
+    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result)=>{
       if(err) {
         res.send(err);
       } else {
@@ -43,7 +43,7 @@ module.exports = {
   },
 
   getCineByMovie: function(req, res) {
-    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ?", req.params.movie_id, (err, result) => {
+    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result) => {
       if(err) {
         res.send(err);
       } else {
@@ -55,7 +55,7 @@ module.exports = {
   },
 
   getNearestCine: function(req, res) {
-    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ?", req.params.movie_id, (err, result)=>{
+    sql.query("SELECT moveek_id FROM movies WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result)=>{
       if(err) {
         res.send(err);
       } else {

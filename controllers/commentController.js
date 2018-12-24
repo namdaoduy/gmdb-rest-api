@@ -22,21 +22,21 @@ module.exports = {
   },
 
   getAllComments: function(req, res) {
-    sql.query("SELECT name, email, comment, point FROM rates WHERE movie_id = ?", req.params.movie_id, (err, result)=>{
+    sql.query("SELECT name, email, comment, point FROM rates WHERE movie_id = ? and deleted_at is null", req.params.movie_id, (err, result)=>{
       if(err) res.send(err);
       else res.send(result);
     })
   },
 
   getCommentById: function(req, res) {
-    sql.query("SELECT name, email, comment, point rates WHERE movie_id = ? AND rate_id = ?", [req.params.movie_id, req.params.rate_id], (err, result)=>{
+    sql.query("SELECT name, email, comment, point FROM rates WHERE movie_id = ? AND rate_id = ? and deleted_at is null", [req.params.movie_id, req.params.rate_id], (err, result)=>{
       if(err) res.send(err);
       else res.send(result[0]);
     })
   },
 
   deleteById: function(req, res) {
-    sql.query("DELETE FROM rates WHERE movie_id = ? AND rate_id = ?", [req.params.movie_id, req.params.rate_id], (err, result)=>{
+    sql.query("UPDATE rates SET deleted_at = NOW() WHERE movie_id = ? AND rate_id = ?", [req.params.movie_id, req.params.rate_id], (err, result)=>{
       if(err) res.send(err);
       else res.send({message: "Delete successful"});
     })

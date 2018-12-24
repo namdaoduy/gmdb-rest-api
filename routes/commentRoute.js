@@ -15,6 +15,6 @@ router.route('/movies/:movie_id/comments/:rate_id')
   // get a comment by id
   .get(commentController.getCommentById)
   // delete a comment, admin permission
-  .delete(verifyToken, commentController.deleteById)
-
+  // .delete(verifyToken, commentController.deleteById)
+  .delete(commentController.deleteById)
 module.exports = router;
