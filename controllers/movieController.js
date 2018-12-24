@@ -19,9 +19,10 @@ module.exports = {
       main_actors: req.body.main_actors,
       types: req.body.types,
       description: req.body.description,
-      moveek_id: req.body.moveek_id
+      moveek_id: req.body.moveek_id,
+      duration: req.body.duration,
     }
-    if(!newMovie.name || !newMovie.imdb_rating || !newMovie.trailer_url || !newMovie.main_actors || !newMovie.types || !newMovie.description || !newMovie.moveek_id) {
+    if(!newMovie.name || !newMovie.imdb_rating || !newMovie.trailer_url || !newMovie.main_actors || !newMovie.types || !newMovie.description || !newMovie.moveek_id || !newMovie.duration) {
       res.send(err);
       return;
     }
@@ -84,7 +85,8 @@ module.exports = {
       main_actors: req.body.main_actors,
       types: req.body.types,
       description: req.body.description,
-      moveek_id: req.body.moveek_id
+      moveek_id: req.body.moveek_id,
+      duration: req.body.duration
     }
     sql.query('UPDATE movies SET ? WHERE movie_id = ?', [updateMovie, req.params.movie_id], (err, result)=>{
       if(err) res.send(err);
