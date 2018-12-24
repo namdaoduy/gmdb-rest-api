@@ -80,12 +80,11 @@ module.exports = {
     const updateMovie = {
       name: req.body.name,
       imdb_rating: req.body.imdb_rating,
-      image_url: '/images/' + req.body.moveek_id + '.jpg',
+      age_rated: req.body.age_rated,
       trailer_url: req.body.trailer_url,
       main_actors: req.body.main_actors,
       types: req.body.types,
       description: req.body.description,
-      moveek_id: req.body.moveek_id,
       duration: req.body.duration
     }
     sql.query('UPDATE movies SET ? WHERE movie_id = ?', [updateMovie, req.params.movie_id], (err, result)=>{
