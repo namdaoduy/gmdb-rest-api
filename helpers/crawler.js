@@ -68,7 +68,7 @@ class Crawler {
       moveek_id +
       "?date=" + date +
       "&version=")
-    // .set('Cookie', locationHanoi);
+    .set('Cookie', locationHanoi);
     let cine_list = [];
     for (let i = 0; i < res.body.cineplexes.length; i++) {
       for (let j = 0; j < res.body.cineplexes[i].cinemas.length; j++) {
