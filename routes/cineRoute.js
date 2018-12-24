@@ -8,5 +8,5 @@ router.route('/cine/:movie_id')
 
 // recommend movie by location and time
 router.route('/nearestcine/:movie_id')
-  .get(showtimeController.getNearestCine);
+  .post(showtimeController.getNearestCine);
 module.exports = router;

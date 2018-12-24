@@ -108,7 +108,7 @@ module.exports = {
     crawler.crawlMovieInfo()
     .then(response=>{
       let list_moveek_id = [];
-      sql.query('SELECT moveek_id FROM movies', (err, result)=>{
+      sql.query('SELECT moveek_id FROM movies where deleted_at is null', (err, result)=>{
         if(err) res.send(err);
         else {
           list_moveek_id = result.map(item => (item.moveek_id.toString()))
