@@ -33,7 +33,7 @@ module.exports = {
 
   getMovieByName: function (req, res) {
     const movieName = '%' + req.params.movie_name + '%';
-    sql.query('SELECT name FROM movies WHERE name LIKE ?', movieName, (err, result) => {
+    sql.query('SELECT * FROM movies WHERE name LIKE ?', movieName, (err, result) => {
       if (err) res.send(err);
       else {
         res.json(result);
