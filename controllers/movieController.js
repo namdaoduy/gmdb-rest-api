@@ -109,7 +109,10 @@ module.exports = {
     .then(response=>{
       let list_moveek_id = [];
       sql.query('SELECT moveek_id FROM movies where deleted_at is null', (err, result)=>{
-        if(err) res.send(err);
+        if(err) {
+          console.log(err);
+          return;
+        }
         else {
           list_moveek_id = result.map(item => (item.moveek_id.toString()))
         }
@@ -120,7 +123,7 @@ module.exports = {
             response[i].image_url = '/images/' + image_name + '.jpg';
             sql.query('INSERT INTO movies SET ?', response[i], (err, result)=>{
               if(err) {
-                res.send(err);
+                console.log(err);
               }
             })
           }

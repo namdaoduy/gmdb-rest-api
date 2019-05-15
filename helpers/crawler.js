@@ -104,131 +104,100 @@ class Crawler {
   }
 
   async crawlImageURL() {
-    const res = await https.get("https://moveek.com/dang-chieu/")
-
+    const res = await https.get("https://moveek.com/dang-chieu/");
     const ele = parser.parseFromString(res.text, "text/html");
     const dom = new JSDOM(ele.rawHTML);
-    const className = dom.window.document.getElementsByClassName('panel panel-post panel-movie-grid');
-    var count = 0;
-    var list = [];
+    const allMovies = dom.window.document.querySelector('.row.grid');
+    const movieArray = [].slice.call(allMovies.children);
+    const list = [];
 
-    while (1) {
-      // if (count == 13) {
-      if (className[count] == undefined) {
-        break;
-      }
-      //if this movie doesnt have MOVEEK RATING ICON on its poster
-      if (className[count].getElementsByTagName('a')[0].getElementsByTagName("img")[1] == undefined) {
-        list.push({
-          name: className[count].getElementsByTagName('a')[0].getAttribute('title'),
-          urlTail: className[count].getElementsByTagName('a')[0].getAttribute('href').toString().slice(11),
-          urlImg: className[count].getElementsByTagName('a')[0].getElementsByTagName("img")[0].getAttribute('data-srcset').split(' ')[2],
-        })
-      }
-      else {
-        list.push({
-          name: className[count].getElementsByTagName('a')[0].getAttribute('title'),
-          urlTail: className[count].getElementsByTagName('a')[0].getAttribute('href').toString().slice(11),
-          urlImg: className[count].getElementsByTagName('a')[0].getElementsByTagName("img")[1].getAttribute('data-srcset').split(' ')[2],
-        })
-      }
+    movieArray.forEach((movie) => {
+      const link = movie.querySelector('a');
+      const urlTail = link.getAttribute('href');
+      const name = link.getAttribute('title');
+      const urlImg = link.querySelector('img')
+        .getAttribute('data-srcset').split(' ')[2];
+      list.push({
+        name,
+        urlTail,
+        urlImg,
+      })
+    });
 
-      count = count + 1;
-    }
+    // while (1) {
+    //   // if (count == 13) {
+    //   if (className[count] == undefined) {
+    //     break;
+    //   }
+    //   //if this movie doesnt have MOVEEK RATING ICON on its poster
+    //   if (className[count].getElementsByTagName('a')[0].getElementsByTagName("img")[1] == undefined) {
+    //     list.push({
+    //       name: className[count].getElementsByTagName('a')[0].getAttribute('title'),
+    //       urlTail: className[count].getElementsByTagName('a')[0].getAttribute('href').toString().slice(11),
+    //       urlImg: className[count].getElementsByTagName('a')[0].getElementsByTagName("img")[0].getAttribute('data-srcset').split(' ')[2],
+    //     })
+    //   }
+    //   else {
+    //     list.push({
+    //       name: className[count].getElementsByTagName('a')[0].getAttribute('title'),
+    //       urlTail: className[count].getElementsByTagName('a')[0].getAttribute('href').toString().slice(11),
+    //       urlImg: className[count].getElementsByTagName('a')[0].getElementsByTagName("img")[1].getAttribute('data-srcset').split(' ')[2],
+    //     })
+    //   }
+
+    //   count = count + 1;
+    // }
     // console.log(list)
+    // console.log(list);
     return list;
   }
 
   // crawl all info of movies and add to Database
   async crawlMovieInfo() {
-    let returnList = await this.crawlImageURL();
-    let moveekIDList = await this.crawlMoveekId();
-    var list = [];
-    var count = 0;
+    const movieList = await this.crawlImageURL();
+    let list = [];
 
-    while (1) {
-      if (count == returnList.length) {
-        break;
-      }
-
-      // console.log(count)
-      var movieURL = returnList[count].urlTail.toString();
-      const res = await https.get("https://moveek.com/phim" + movieURL);
-
+    for (const movie of movieList) {
+      const res = await https.get(`https://moveek.com${movie.urlTail}`);
       const ele = parser.parseFromString(res.text, "text/html");
       const dom = new JSDOM(ele.rawHTML);
-      var type_pick;
-      let trailer_id = dom.window.document.getElementsByClassName('movie-actions clearfix m-b-sm visible-xs text-center')[0].getElementsByClassName('action action-trailer btn btn-rounded btn-lg btn-default')[1].getAttribute('data-video-url').toString()
+      const { document } = dom.window;
 
-      //conditions of TYPE when crawl
-      if (dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white').length === 5) {
-        type_pick = 3;
-      }
-      else {
-        type_pick = 2;
-      }
+      const moveek_id = document.querySelector('a[title="Soạn đánh giá"]')
+        .getAttribute('href').slice(12);
 
-      //if this movie doesnt have IMDB RATING
-      if (dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[1] === undefined) {
+      const info = [].slice.call(document.querySelector('.row.mb-3').querySelectorAll('.col.text-center.text-sm-left'));
 
-        //if this movie doesnt have AGE RATING
-        if (dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0] === undefined) {
-          list.push({
-            name: returnList[count].name,
-            moveek_id: moveekIDList[count].moveek_id,
-            age_rated: null,
-            imdb_rating: null,
-            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
-            duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
-            image_url: returnList[count].urlImg,
-            description: dom.window.document.getElementsByClassName('synopsis m-t m-b-xs')[0].getElementsByClassName('text-white')[0].innerHTML
-          })
-        }
-        else {
-          list.push({
-            name: returnList[count].name,
-            moveek_id: moveekIDList[count].moveek_id,
-            age_rated: dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML,
-            imdb_rating: null,
-            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
-            duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
-            image_url: returnList[count].urlImg,
-            description: dom.window.document.getElementsByClassName('synopsis m-t m-b-xs')[0].getElementsByClassName('text-white')[0].innerHTML
-          })
-        }
-      }
-      else {
-        if (dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0] === undefined) {
-          list.push({
-            name: returnList[count].name,
-            moveek_id: moveekIDList[count].moveek_id,
-            age_rated: null,
-            imdb_rating: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
-            duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[1].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
-            image_url: returnList[count].urlImg,
-            description: dom.window.document.getElementsByClassName('synopsis m-t m-b-xs')[0].getElementsByClassName('text-white')[0].innerHTML
-          })
-        }
-        else {
-          list.push({
-            name: returnList[count].name,
-            moveek_id: moveekIDList[count].moveek_id,
-            age_rated: dom.window.document.getElementsByClassName('action action-mpaa btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML,
-            imdb_rating: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[0].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            types: dom.window.document.getElementsByClassName('col-sm-10')[0].getElementsByClassName('text-white')[type_pick].innerHTML.toString().split('<br>')[1].split('Thể loại: ')[1].split('\n')[0],
-            duration: dom.window.document.getElementsByClassName('action action-imdb btn btn-rounded btn-lg btn-icon btn-default')[1].innerHTML.toString().split('<span>'[0].toString().split('<br'))[0],
-            trailer_url: 'https://www.youtube.com/embed/' + trailer_id,
-            image_url: returnList[count].urlImg,
-            description: dom.window.document.getElementsByClassName('synopsis m-t m-b-xs')[0].getElementsByClassName('text-white')[0].innerHTML
-          })
-        }
-      }
+      const age_rated = (info.length >= 1)
+        ? info[info.length - 1].querySelectorAll('span')[1].innerHTML
+        : null;
 
-      count = count + 1;
+      const types = document.querySelector('.mb-0.text-muted.text-truncate').innerHTML
+        .replace(/ +?/g, '')
+        .replace(/\r?\n|\r/g, '')
+        .split('-')[1];
+      
+      const duration = (info.length >= 2)
+        ? info[info.length - 2].querySelectorAll('span')[1].innerHTML.split(' ')[0]
+        : null;
+
+      const trailer_url = 'https://www.youtube.com/embed/' + document.querySelector('.btn.btn-outline-light.btn-sm')
+        .getAttribute('data-video-url');
+      
+      const description = document.querySelector('.mb-3.text-justify').innerHTML;
+
+      const result = {
+        name: movie.name,
+        moveek_id,
+        age_rated,
+        imdb_rating: null,
+        types,
+        duration,
+        trailer_url,
+        image_url: movie.urlImg,
+        description,
+      };
+      list.push(result);
     }
     return list;
   }
